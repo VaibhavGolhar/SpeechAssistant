@@ -1,0 +1,1166 @@
+﻿#include <SFML/Graphics.hpp>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <math.h>
+ 
+using namespace std;
+ 
+void quad();        //Calc quadratic equation solver
+void ap();          //Calc Arithmetic progression
+void gp();          //Calc Geometric progression
+void hp();          //Calc Harmonic progression
+void roct();        //Read out custom text
+void roct2();       //Read out text saved in a file
+ 
+int main()
+{
+    int x;
+    cout<<endl<<endl;
+    cout<<"How can I help you?\n    1.Alphabets\n    2.Calculator\n    3.Read out custom text\n    4.Read out text from a file"<<endl;
+    string phrase ="How can I help you? 1 Alphabets 2 Calculator 3 Read out custom text 4 Read out text from a file.";
+    string command ="espeak \"" + phrase + "\"";
+    const char *charCommand = command.c_str();
+    system(charCommand);
+    cin>>x;                                                     //offering choices
+ 
+    if ( x !=  1 && x != 2 && x != 3 && x != 4) 
+    {
+        cout<< "Invalid choice.\nChoose again."; 
+        string phrase50 ="Invalid choice. Choose again.";
+        string command50 ="espeak \"" + phrase50 + "\"";
+        const char *charCommand50 = command50.c_str();
+        system(charCommand50);
+        
+        main();                                                 //invalid choice
+    } 
+ 
+    if (x ==1 )
+   {
+    //Window Rendering
+ 
+    sf::RenderWindow window(sf::VideoMode(2160, 1080), "Alphabets", sf::Style::Close | sf::Style::Resize);
+    window.setFramerateLimit(60);
+ 
+    //Display Text
+ 
+    sf::Font font1;
+        if (!font1.loadFromFile("SmartWatch-jE9Z0.ttf"))
+            cout<<"Couldn't load font";
+ 
+    sf::Font font2;
+        if (!font2.loadFromFile("SF-Pro.ttf"))
+            cout<<"Couldn't load font";
+ 
+        sf::Text Intro;
+        Intro.setFont(font1);
+        Intro.setCharacterSize(80);
+        Intro.setFillColor(sf::Color::White);
+        Intro.setPosition(580, 730.f);
+        Intro.setString("Welcome! I am a virtual assistant.\n           My name is Inertis.\n ");
+ 
+    //Input box
+ 
+    sf::RectangleShape input;
+    input.setSize(sf::Vector2f(500.f, 30.f));
+    input.setPosition(10.f, -50.f);
+ 
+    sf::Texture ibox;
+    ibox.loadFromFile("ibox.png");
+ 
+    sf::Texture boxTexture;
+    boxTexture.loadFromFile("inputbox.png");
+ 
+    input.setTexture(&ibox);
+
+
+
+
+
+        //Alphabets
+ 
+        sf::Text choice1;
+        choice1.setFont(font2);
+        choice1.setCharacterSize(40);
+        choice1.setFillColor(sf::Color::White);
+        choice1.setString("I can teach the english alphabet with examples.\nEnter an alphabet.\nEnter '0' to exit.");
+        choice1.setPosition(10.f, 1085.f);
+ 
+        sf::Text alphabet0;
+        alphabet0.setFont(font2);
+        alphabet0.setCharacterSize(25);
+        alphabet0.setFillColor(sf::Color::White);
+        alphabet0.setString("");
+        alphabet0.setPosition(-1000.f, -1000.f);
+ 
+        sf::RectangleShape image;
+        image.setSize(sf::Vector2f(352.f, 500.f));
+        image.setPosition(-1000.f, -1000.f);
+ 
+        sf::Text A;
+        A.setFont(font2);
+        A.setCharacterSize(40);
+        A.setFillColor(sf::Color::White);
+        A.setString("");
+        A.setPosition(-1000.f, -1000.f);
+ 
+        sf::Texture imtext;
+ 
+    //Time control
+ 
+    sf::Clock clock1;
+    sf::Clock clock2;
+ 
+    //Window procedure
+ 
+     while (window.isOpen())
+    {
+        sf::Event evnt;
+        while (window.pollEvent(evnt))
+        {
+           switch (evnt.type)
+           {
+            case sf::Event::Closed:
+            window.close();
+            break;
+            default: break;
+           }
+        }
+
+
+
+
+        //For animation
+ 
+        float dt1, dt2;
+ 
+        sf::Time time = clock1.getElapsedTime();
+        dt1 = time.asSeconds();
+        clock1.restart().asSeconds();
+ 
+        sf::Time time2 = clock2.getElapsedTime();
+        dt2 = time2.asMilliseconds();
+ 
+        Intro.move(0.f, -25.f * dt1 * 61.2047);
+
+
+
+
+
+        if(Intro.getPosition().y <= 10.f)
+        {
+            Intro.move(0.f, 25.f * dt1 * 61.2047);
+        }
+
+
+
+
+
+        //speech
+ 
+        if(dt2>=800 && dt2<=1300)
+        {
+            string phrase ="Welcome! I am a Virtual assistant . My name is Inertis .";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+        }
+
+
+
+
+
+        //input box position
+
+
+
+
+           if (dt2>= 2000 && dt2<= 5999)
+           {
+            choice1.setPosition(20.f, 300.f);
+           }
+
+
+
+
+
+
+            if ( dt2>=6000 && dt2<=7000)
+ 
+            {
+               string phrase ="I can teach the english alphabet with examples. Enter an alphabet. Enter zero to exit.";
+                string command ="espeak \"" + phrase + "\"";
+                const char *charCommand = command.c_str();
+                system(charCommand);
+                input.setTexture(&boxTexture);
+                input.setPosition(20.f, choice1.getPosition().y + 170.f);
+ 
+            }
+ 
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num0))
+            {
+                alphabet0.setString("0");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+ 
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+            {
+                alphabet0.setString("A");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::B))
+            {
+                alphabet0.setString("B");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
+            {
+                alphabet0.setString("C");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+            {
+                alphabet0.setString("D");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+            {
+                alphabet0.setString("E");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+            {
+                alphabet0.setString("F");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
+            {
+                alphabet0.setString("G");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::H))
+            {
+                alphabet0.setString("H");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::I))
+            {
+                alphabet0.setString("I");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
+            {
+                alphabet0.setString("J");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
+            {
+                alphabet0.setString("K");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
+            {
+                alphabet0.setString("L");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
+            {
+                alphabet0.setString("M");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::N))
+            {
+                alphabet0.setString("N");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::O))
+            {
+                alphabet0.setString("O");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
+            {
+                alphabet0.setString("P");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+            {
+                alphabet0.setString("Q");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+            {
+                alphabet0.setString("R");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+            {
+                alphabet0.setString("S");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::T))
+            {
+                alphabet0.setString("T");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::U))
+            {
+                alphabet0.setString("U");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::V))
+            {
+                alphabet0.setString("V");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+            {
+                alphabet0.setString("W");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
+            {
+                alphabet0.setString("X");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
+            {
+                alphabet0.setString("Y");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+            {
+                alphabet0.setString("Z");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+ 
+            if ( sf::Keyboard::isKeyPressed(sf::Keyboard::Backspace))
+            {
+                alphabet0.setString("");
+                alphabet0.setPosition(input.getPosition().x + 15.f , input.getPosition().y - 2.f);
+ 
+            }
+ 
+        if (alphabet0.getString() == "0" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+ 
+            window.close();
+ 
+        }
+ 
+        if (alphabet0.getString() == "A" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            A.setPosition(input.getPosition().x , input.getPosition().y + 70);
+            A.setString("A for Apple.");
+            imtext.loadFromFile("Images/A.png");
+            image.setTexture(&imtext);
+            image.setPosition(A.getPosition().x + 500.f, A.getPosition().y);
+
+
+
+
+            string phrase ="A for apple.";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+ 
+        }
+ 
+        if (alphabet0.getString() == "B" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            A.setPosition(input.getPosition().x , input.getPosition().y + 70);
+            A.setString("B for Ball.");
+            imtext.loadFromFile("Images/B.png");
+            image.setTexture(&imtext);
+            image.setPosition(A.getPosition().x + 500.f, A.getPosition().y);
+
+
+
+
+            string phrase ="B for ball.";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+ 
+        }
+ 
+        if (alphabet0.getString() == "C" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            A.setPosition(input.getPosition().x , input.getPosition().y + 70);
+            A.setString("C for Cat.");
+            imtext.loadFromFile("Images/C.png");
+            image.setTexture(&imtext);
+            image.setPosition(A.getPosition().x + 500.f, A.getPosition().y);
+
+
+
+
+            string phrase ="C for cat.";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+ 
+        }
+ 
+        if (alphabet0.getString() == "D" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            A.setPosition(input.getPosition().x , input.getPosition().y + 70);
+            A.setString("D for Dog");
+            imtext.loadFromFile("Images/D.png");
+            image.setTexture(&imtext);
+            image.setPosition(A.getPosition().x + 500.f, A.getPosition().y);
+
+
+
+
+            string phrase ="D for Dog";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+ 
+        }
+ 
+        if (alphabet0.getString() == "E" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            A.setPosition(input.getPosition().x , input.getPosition().y + 70);
+            A.setString("E for Elephant.");
+            imtext.loadFromFile("Images/E.png");
+            image.setTexture(&imtext);
+            image.setPosition(A.getPosition().x + 500.f, A.getPosition().y);
+
+
+
+
+            string phrase ="E for elephant.";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+ 
+        }
+ 
+        if (alphabet0.getString() == "F" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            A.setPosition(input.getPosition().x , input.getPosition().y + 70);
+            A.setString("F for Fish.");
+            imtext.loadFromFile("Images/F.png");
+            image.setTexture(&imtext);
+            image.setPosition(A.getPosition().x + 500.f, A.getPosition().y);
+
+
+
+
+            string phrase ="F for Fish.";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+ 
+        }
+ 
+        if (alphabet0.getString() == "G" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            A.setPosition(input.getPosition().x , input.getPosition().y + 70);
+            A.setString("G for Grapes.");
+            imtext.loadFromFile("Images/G.png");
+            image.setTexture(&imtext);
+            image.setPosition(A.getPosition().x + 500.f, A.getPosition().y);
+
+
+
+
+            string phrase ="G for grapes.";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+ 
+        }
+ 
+        if (alphabet0.getString() == "H" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            A.setPosition(input.getPosition().x , input.getPosition().y + 70);
+            A.setString("H for House.");
+            imtext.loadFromFile("Images/H.png");
+            image.setTexture(&imtext);
+            image.setPosition(A.getPosition().x + 500.f, A.getPosition().y);
+
+
+
+
+            string phrase ="H for House.";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+ 
+        }
+ 
+        if (alphabet0.getString() == "I" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            A.setPosition(input.getPosition().x , input.getPosition().y + 70);
+            A.setString("I for Icecream.");
+            imtext.loadFromFile("Images/I.png");
+            image.setTexture(&imtext);
+            image.setPosition(A.getPosition().x + 500.f, A.getPosition().y);
+
+
+
+
+            string phrase ="I for Ice cream";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+ 
+        }
+ 
+        if (alphabet0.getString() == "J" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            A.setPosition(input.getPosition().x , input.getPosition().y + 70);
+            A.setString("J for Jug.");
+            imtext.loadFromFile("Images/J.png");
+            image.setTexture(&imtext);
+            image.setPosition(A.getPosition().x + 500.f, A.getPosition().y);
+
+
+
+
+            string phrase ="J for jug.";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+ 
+        }
+ 
+        if (alphabet0.getString() == "K" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            A.setPosition(input.getPosition().x , input.getPosition().y + 70);
+            A.setString("K for Kite.");
+            imtext.loadFromFile("Images/K.png");
+            image.setTexture(&imtext);
+            image.setPosition(A.getPosition().x + 500.f, A.getPosition().y);
+
+
+
+
+            string phrase ="K for Kite.";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+ 
+        }
+ 
+        if (alphabet0.getString() == "L" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            A.setPosition(input.getPosition().x , input.getPosition().y + 70);
+            A.setString("L for Lion.");
+            imtext.loadFromFile("Images/L.png");
+            image.setTexture(&imtext);
+            image.setPosition(A.getPosition().x + 500.f, A.getPosition().y);
+
+
+
+
+            string phrase ="L for lion";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+ 
+        }
+ 
+        if (alphabet0.getString() == "M" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            A.setPosition(input.getPosition().x , input.getPosition().y + 70);
+            A.setString("M for Mango.");
+            imtext.loadFromFile("Images/M.png");
+            image.setTexture(&imtext);
+            image.setPosition(A.getPosition().x + 500.f, A.getPosition().y);
+
+
+
+
+            string phrase ="M for mango";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+ 
+        }
+ 
+        if (alphabet0.getString() == "N" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            A.setPosition(input.getPosition().x , input.getPosition().y + 70);
+            A.setString("N for Nest.");
+            imtext.loadFromFile("Images/N.png");
+            image.setTexture(&imtext);
+            image.setPosition(A.getPosition().x + 500.f, A.getPosition().y);
+ 
+            string phrase ="N for nest";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+ 
+        }
+ 
+        if (alphabet0.getString() == "O" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            A.setPosition(input.getPosition().x , input.getPosition().y + 70);
+            A.setString("O for Orange.");
+            imtext.loadFromFile("Images/O.png");
+            image.setTexture(&imtext);
+            image.setPosition(A.getPosition().x + 500.f, A.getPosition().y);
+
+
+
+
+            string phrase ="O for orange.";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+ 
+        }
+ 
+        if (alphabet0.getString() == "P" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            A.setPosition(input.getPosition().x , input.getPosition().y + 70);
+            A.setString("P for Parrot.");
+            imtext.loadFromFile("Images/P.png");
+            image.setTexture(&imtext);
+            image.setPosition(A.getPosition().x + 500.f, A.getPosition().y);
+
+
+
+
+            string phrase ="P for parrot.";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+ 
+        }
+ 
+        if (alphabet0.getString() == "Q" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            A.setPosition(input.getPosition().x , input.getPosition().y + 70);
+            A.setString("Q for Queen.");
+            imtext.loadFromFile("Images/Q.png");
+            image.setTexture(&imtext);
+            image.setPosition(A.getPosition().x + 500.f, A.getPosition().y);
+
+
+
+
+            string phrase ="Q for queen.";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+ 
+        }
+ 
+        if (alphabet0.getString() == "R" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            A.setPosition(input.getPosition().x , input.getPosition().y + 70);
+            A.setString("R for Rat.");
+            imtext.loadFromFile("Images/R.png");
+            image.setTexture(&imtext);
+            image.setPosition(A.getPosition().x + 500.f, A.getPosition().y);
+
+
+
+
+            string phrase ="R for Rat.";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+ 
+        }
+ 
+        if (alphabet0.getString() == "S" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            A.setPosition(input.getPosition().x , input.getPosition().y + 70);
+            A.setString("S for Sun.");
+            imtext.loadFromFile("Images/S.png");
+            image.setTexture(&imtext);
+            image.setPosition(A.getPosition().x + 500.f, A.getPosition().y);
+
+
+
+
+            string phrase ="S for sun.";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+ 
+        }
+ 
+        if (alphabet0.getString() == "T" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            A.setPosition(input.getPosition().x , input.getPosition().y + 70);
+            A.setString("T for Tiger.");
+            imtext.loadFromFile("Images/T.png");
+            image.setTexture(&imtext);
+            image.setPosition(A.getPosition().x + 500.f, A.getPosition().y);
+
+
+
+
+            string phrase ="T for tiger.";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+ 
+        }
+ 
+        if (alphabet0.getString() == "U" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            A.setPosition(input.getPosition().x , input.getPosition().y + 70);
+            A.setString("U for Umbrella");
+            imtext.loadFromFile("Images/U.png");
+            image.setTexture(&imtext);
+            image.setPosition(A.getPosition().x + 500.f, A.getPosition().y);
+
+
+
+
+            string phrase ="U for umbrella";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+ 
+        }
+ 
+        if (alphabet0.getString() == "V" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            A.setPosition(input.getPosition().x , input.getPosition().y + 70);
+            A.setString("V for Van");
+            imtext.loadFromFile("Images/V.png");
+            image.setTexture(&imtext);
+            image.setPosition(A.getPosition().x + 500.f, A.getPosition().y);
+
+
+
+
+            string phrase ="V for van.";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+ 
+        }
+ 
+        if (alphabet0.getString() == "W" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            A.setPosition(input.getPosition().x , input.getPosition().y + 70);
+            A.setString("W for Watch.");
+            imtext.loadFromFile("Images/W.png");
+            image.setTexture(&imtext);
+            image.setPosition(A.getPosition().x + 500.f, A.getPosition().y);
+
+
+
+
+            string phrase ="W for watch.";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+ 
+        }
+ 
+        if (alphabet0.getString() == "X" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            A.setPosition(input.getPosition().x , input.getPosition().y + 70);
+            A.setString("X for Xmas Tree.");
+            imtext.loadFromFile("Images/X.png");
+            image.setTexture(&imtext);
+            image.setPosition(A.getPosition().x + 500.f, A.getPosition().y);
+
+
+
+
+            string phrase ="X for Xmas tree.";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+ 
+        }
+ 
+        if (alphabet0.getString() == "Y" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            A.setPosition(input.getPosition().x , input.getPosition().y + 70);
+            A.setString("Y for Yak.");
+            imtext.loadFromFile("Images/Y.png");
+            image.setTexture(&imtext);
+            image.setPosition(A.getPosition().x + 500.f, A.getPosition().y);
+ 
+            string phrase ="Y for yak.";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+ 
+        }
+ 
+        if (alphabet0.getString() == "Z" && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            A.setPosition(input.getPosition().x , input.getPosition().y + 70);
+            A.setString("Z for Zebra.");
+            imtext.loadFromFile("Images/Z.png");
+            image.setTexture(&imtext);
+            image.setPosition(A.getPosition().x + 500.f, A.getPosition().y);
+
+
+
+
+            string phrase ="Z for zebra.";
+            string command ="espeak \"" + phrase + "\"";
+            const char *charCommand = command.c_str();
+            system(charCommand);
+ 
+        }
+ 
+        //Draw
+ 
+        window.clear();
+        window.draw(Intro);
+        window.draw(input);
+        window.draw(choice1);
+        window.draw(image);
+        window.draw(alphabet0);
+        window.draw(A);
+        window.display();
+ 
+    }
+ 
+   }
+ 
+    if ( x == 2)
+    {
+        int operation;
+        cout<<endl <<endl<<endl;
+        cout<<"1. Quadtratic equation solver.\n2. Arithmetic Progression\n3. Geometric Progression\n4. Harmonic Progression"<<endl;
+        string phrase ="1 Quadtratic equation solver 2 Arithmetic Progression 3 Geometric Progression 4 Harmonic Progression";
+        string command ="espeak \"" + phrase + "\"";
+        const char *charCommand = command.c_str();
+        system(charCommand);
+ 
+        cin >> operation;
+ 
+        switch (operation)
+        {
+            case 1: quad(); break;
+            case 2: ap(); break;
+            case 3: gp(); break;
+            case 4: hp(); break;
+        }
+
+
+
+
+    }
+
+
+
+
+    if ( x == 3)
+    {
+ 
+        roct();
+ 
+    }
+ 
+    if ( x ==4 )
+    {
+        roct2();
+    }
+ 
+    return 0;
+}
+ 
+void ap(){
+    int a2, d2, n2;
+    int i2,j2; char ch2;
+    char cont;
+ 
+    cout<<endl<<endl;
+    cout<<"Enter the first term: "<<endl;
+    string phrase = "Enter the first term: " ;
+    string command = "espeak \"" + phrase + "\"";
+    const char *charCommand = command.c_str();
+    system(charCommand);
+    cin>>a2;
+    cout<<"Enter the common difference: "<<endl;
+    string phrase2 = "Enter the common difference: " ;
+    string command2 = "espeak \"" + phrase2 + "\"";
+    const char *charCommand2 = command2.c_str();
+    system(charCommand2);
+    cin>>d2;
+    cout<<"Enter the number of terms to generate: "<<endl;
+    string phrase3 = "Enter the number of terms to generate: " ;
+    string command3 = "espeak \"" + phrase3 + "\"";
+    const char *charCommand3 = command3.c_str();
+    system(charCommand3);
+    cin>>n2;
+ 
+    cout<<"The arithmetic progression is:"<<endl;
+    string phrase10 = "The arithmetic progression is: " ;
+    string command10 = "espeak \"" + phrase10 + "\"";
+    const char *charCommand10 = command10.c_str();
+    system(charCommand10);
+    for (i2 = 0; i2 < n2; i2++) {
+            j2=a2+(i2*d2);
+        cout<<j2<<" ";
+    }
+    cout<<endl;
+    cout<<endl<<"Continue? Enter 'y' to continue or any other key to exit. "<<endl;
+ 
+        string phrase4 = "Enter 'y' to continue or any other key to exit." ;
+        string command4 = "espeak \"" + phrase4 + "\"";
+        const char *charCommand4 = command4.c_str();
+        system(charCommand4);
+ 
+        cin>>cont;
+        if (cont == 'y' || cont == 'Y') ap();
+        if (cont != 'y' || cont != 'Y') exit(0);
+}
+ 
+void quad()
+{
+ 
+    double a1, b1, c1;
+    double x1, x2;
+    char cont;
+ 
+    cout<<endl<<endl;
+    cout<< "Quadratic equation of type a(x^2) + b(x) + c = 0"<<endl;
+    cout<<"Enter the values of a, b, and c: "<<endl;
+    string phrase = "Enter the values of a, b, and c: ";
+        string command = "espeak \"" + phrase + "\"";
+        const char *charCommand = command.c_str();
+        system(charCommand);
+    cin>>a1;
+    cin>>b1;
+    cin>>c1;
+ 
+    double discriminant = b1*b1 - 4*a1*c1;
+    if (discriminant > 0) {
+        x1 = (-b1 + sqrt(discriminant)) / (2*a1);
+        x2 = (-b1 - sqrt(discriminant)) / (2*a1);
+        cout<<"The solutions are x1 =" << x1 <<"and x2 = "<< x2 <<endl;
+    }
+    else if (discriminant == 0) {
+        x1 = -b1 / (2*a1);
+        cout<<"The solution is x = "<< x1<<endl;
+    }
+    else {
+        cout<<"The equation has no real solutions."<<endl;
+        string phrase = "The equation has no real solutions." ;
+        string command = "espeak \"" + phrase + "\"";
+        const char *charCommand = command.c_str();
+        system(charCommand);
+        }
+        cout<<endl;
+        cout<<endl<<"Continue? Enter 'y' to continue or any other key to exit. "<<endl;
+ 
+        string phrase12 = "Enter 'y' to continue or any other key to exit." ;
+        string command12 = "espeak \"" + phrase12 + "\"";
+        const char *charCommand12 = command12.c_str();
+        system(charCommand12);
+ 
+        cin>>cont;
+        if (cont == 'y' || cont == 'Y') quad();
+        if (cont != 'y' || cont != 'Y') exit(0);
+ 
+}
+ 
+void gp()
+{
+    int a3, r3, n3;
+    int i3,m3,x3;
+    char cont;
+ 
+    cout<<endl<<endl;
+    cout<<"Enter the first term: "<<endl;
+    string phrase = "Enter the first term: " ;
+    string command = "espeak \"" + phrase + "\"";
+    const char *charCommand = command.c_str();
+    system(charCommand);
+    cin>>a3;
+    cout<<"Enter the common ratio: "<<endl;
+    string phrase2 = "Enter the common ratio: " ;
+    string command2 = "espeak \"" + phrase2 + "\"";
+    const char *charCommand2 = command2.c_str();
+    system(charCommand2);
+    cin>>r3;
+    cout<<"Enter the number of terms to generate: "<<endl;
+    string phrase3 = "Enter the number of terms to generate: " ;
+    string command3 = "espeak \"" + phrase3 + "\"";
+    const char *charCommand3 = command3.c_str();
+    system(charCommand3);
+    cin>>n3;
+ 
+    cout<<"The geometric progression is:"<<endl;
+    string phrase4 = "The geometric progression is: " ;
+    string command4 = "espeak \"" + phrase4 + "\"";
+    const char *charCommand4 = command4.c_str();
+    system(charCommand4);
+    for (i3=0;i3<n3;i3++)
+    {
+        m3=pow(r3,i3);
+        x3=a3*m3;
+        cout<<x3<<"  ";
+ 
+    }
+    cout<<endl;
+    cout<<endl<<"Continue? Enter 'y' to continue or any other key to exit. "<<endl;
+ 
+        string phrase11 = "Enter 'y' to continue or any other key to exit." ;
+        string command11 = "espeak \"" + phrase11 + "\"";
+        const char *charCommand11 = command11.c_str();
+        system(charCommand11);
+ 
+        cin>>cont;
+        if (cont == 'y' || cont == 'Y') gp();
+        if (cont != 'y' || cont != 'Y') exit(0);
+}
+ 
+void hp()
+{
+    int a4, n4, d4, i4, j4 ;
+    char cont ;
+ 
+    cout << "Enter the first term : "<<endl;
+    string phrase = "Enter the first term " ;
+    string command = "espeak \"" + phrase + "\"";
+    const char *charCommand = command.c_str();
+    system(charCommand);
+    cout<<"1 / ";cin>>a4;
+ 
+    cout<<"Enter the common difference : "<<endl;
+    string phrase2 = "Enter the common difference " ;
+    string command2 = "espeak \"" + phrase2 + "\"";
+    const char *charCommand2 = command2.c_str();
+    system(charCommand2);
+    cout<<"1 / "<<a4<<" + "; cin>>d4;
+ 
+    cout<<"Enter the number of terms to generate : "<<endl;
+    string phrase3 = "Enter the number of terms to generate " ;
+    string command3 = "espeak \"" + phrase3 + "\"";
+    const char *charCommand3 = command3.c_str();
+    system(charCommand3);
+    cin>>n4;
+ 
+    cout<<"The harmonic progression is :"<<endl;
+    string phrase10 = "The harmonic progression is " ;
+    string command10 = "espeak \"" + phrase10 + "\"";
+    const char *charCommand10 = command10.c_str();
+    system(charCommand10);
+ 
+    for (i4 = 1; i4 <= n4; i4++)
+    {
+        j4 =  (a4 + (( i4 - 1 ) * d4));
+        cout << "1 / "<< j4 << ", ";
+    }
+ 
+    cout<<endl;
+    cout<<endl<<"Continue? Enter 'y' to continue or any other key to exit. "<<endl;
+ 
+        string phrase11 = "Enter 'y' to continue or any other key to exit." ;
+        string command11 = "espeak \"" + phrase11 + "\"";
+        const char *charCommand11 = command11.c_str();
+        system(charCommand11);
+ 
+        cin>>cont;
+        if (cont == 'y' || cont == 'Y') hp();
+        if (cont != 'y' || cont != 'Y') exit(0);
+
+
+
+
+}
+ 
+void roct()
+{
+    cout<<"Enter text you want to be read out.\n "<<endl;
+        string phrase1 = "Enter text you want to be read out." ;
+        string command1 = "espeak \"" + phrase1 + "\"";
+        const char *charCommand1 = command1.c_str();
+        system(charCommand1);
+ 
+        string read;
+        char cont;
+        cin.ignore();
+        getline(cin, read);
+ 
+        string phrase2 = read ;
+        string command2 = "espeak \"" + phrase2 + "\"";
+        const char *charCommand2 = command2.c_str();
+        system(charCommand2);
+ 
+        fstream file;
+        file.open("read.txt", ios::app);
+        if (file.is_open())
+        {
+            file << read << endl<< endl<< endl;
+        }
+ 
+        cout<<"Continue? Enter 'y' to continue or any other key to exit. "<<endl;
+ 
+        string phrase3 = "Enter 'y' to continue or any other key to exit." ;
+        string command3 = "espeak \"" + phrase3 + "\"";
+        const char *charCommand3 = command3.c_str();
+        system(charCommand3);
+ 
+        cin>>cont;
+        if (cont == 'y' || cont == 'Y') roct();
+        if (cont != 'y' || cont != 'Y') exit(0);
+}
+ 
+void roct2()
+{
+    char cont;
+    ifstream inFile;
+    inFile.open("read_file.txt");
+ 
+    string oneword;
+ 
+    while (inFile >> oneword)
+    {
+ 
+        cout<< oneword << " ";
+        string phrase = oneword;
+        string command = "espeak \"" + phrase + "\"";
+        const char *charCommand = command.c_str();
+        system(charCommand);
+        
+    }
+    inFile.close();
+    cout<<endl<<endl;
+    cout<<"Continue? Enter 'y' to continue or any other key to exit. "<<endl;
+ 
+    string phrase3 = "Enter 'y' to continue or any other key to exit." ;
+    string command3 = "espeak \"" + phrase3 + "\"";
+    const char *charCommand3 = command3.c_str();
+    system(charCommand3);
+    cin>>cont;
+    if (cont == 'y' || cont == 'Y') roct2();
+    if (cont != 'y' || cont != 'Y') exit(0);
+}
